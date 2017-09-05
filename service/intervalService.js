@@ -35,6 +35,9 @@ module.exports.startPing=function(datas,message,tokenId,chatId,repeatTime,pingTi
                 b=1;
                 console.log("no longer available");
             }
+            if(dat[0].avg<pingTime){
+                b=0;
+            }
             if(dat[0].avg>pingTime){
                 b=0;
                request('http://api.telegram.org/bot'+tokenId+'/sendmessage?chat_id='+chatId+'&text=Ping has taken longer than '+ pingTime, function (error, response, body){})
