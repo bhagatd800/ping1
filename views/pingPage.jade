@@ -1,0 +1,46 @@
+extends layout
+block content
+  div(ng-controller='pingDataController')
+    label 
+      strong Family Name
+    br
+    br
+    input(type='text' placeholder='Family Name' ng-model='data.familyName')
+    br
+    br
+    label 
+      strong IP
+    br
+    br
+    input(type='text' placeholder='ip' ng-model='data.ip')
+    br
+    br
+    label 
+      strong Port
+    br
+    br
+    input(type='text' placeholder='port' ng-model='data.port')
+    br
+    br
+    label 
+      strong If ping time bigger than
+    br
+    br
+    input(type='text' placeholder='time' ng-model='data.pingTime')
+    br
+    br
+    label 
+      strong Alter Time
+    br
+    br
+    input(type='text' placeholder='Alter Time' ng-model='data.alterTime')
+    br
+    br
+    label 
+      strong Ping Every
+    br
+    br
+    input(type='text' placeholder='time' ng-model='data.repeatTime')
+    br
+    br
+    input(type='submit' value='Submit' ng-click='submit()')

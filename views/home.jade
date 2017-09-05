@@ -1,0 +1,31 @@
+extends layout
+block content
+  h1 WELCOME
+  div(ng-controller='homeController' ng-init="getData()" )
+    a(href='/setting') Set Token
+    a(href='/logout' style="position: absolute; right: 40px;") LOG_OUT
+    br
+    br
+    a(href='/pingSetting') Set Ip and Port
+    br
+    br
+    h2 AVailable Data
+    table.table.table-striped
+        thead.thead-inverse
+            tr
+            th Family Name
+            th Ip
+            th Port
+            th Repeat Time
+            th Action
+        tbody
+            tr(ng-repeat="data in dataSet")
+                td {[{data.familyName}]}
+                td {[{data.ip}]}
+                td {[{data.port}]}
+                td {[{data.repeatTime}]}
+                td
+                    button.btn.btn-success(type='button', ng-click='start(data._id)') Start
+                    button.btn.btn-danger(type='button', ng-click='stop()') Stop
+                    button.btn.btn-primary(type='button', ng-click='delete(data._id)') Delete
+            //{[{dataSet[0].familyName}]}

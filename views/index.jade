@@ -1,0 +1,19 @@
+extends layout
+block content
+  h1 Login
+  div(ng-controller='loginController')
+    label 
+      strong User Name
+    br
+    br
+    input(type='text' placeholder='Username' ng-model='data.userName')
+    br
+    br
+    label 
+      strong Password
+    br
+    br
+    input(type='text' placeholder='password' ng-model='data.password')
+    br
+    br
+    input(type='submit' value='Submit' ng-click='login()')

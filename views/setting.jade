@@ -1,0 +1,19 @@
+extends layout
+block content
+  h1= title
+  div(ng-controller='tokenController')
+    label 
+      strong TokenID
+    br
+    br
+    input(type='text' placeholder='Token Id' ng-model='data.tokenId')
+    br
+    br
+    label 
+      strong ChatId
+    br
+    br
+    input(type='text' placeholder='Chat Id' ng-model='data.chatId')
+    br
+    br
+    input(type='submit' value='Submit' ng-click='submit()')
