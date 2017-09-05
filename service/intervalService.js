@@ -20,6 +20,8 @@ module.exports.startPing=function(datas,message,tokenId,chatId,repeatTime,pingTi
         }
 
         else{
+            request('http://api.telegram.org/bot'+tokenId+'/sendmessage?chat_id='+chatId+'&text=Ping has started for '+datas.address, function (error, response, body){})
+            
             status= true;
             console.log("deep");
 
@@ -32,7 +34,6 @@ module.exports.startPing=function(datas,message,tokenId,chatId,repeatTime,pingTi
                 request('http://api.telegram.org/bot'+tokenId+'/sendmessage?chat_id='+chatId+'&text=Not Available', function (error, response, body){})
                 console.log("no longer available");
             }
-            request('http://api.telegram.org/bot'+tokenId+'/sendmessage?chat_id='+chatId+'&text=Ping has started for '+datas.address, function (error, response, body){})
             if(dat[0].avg>pingTime){
                 consloe.log("deepak");
                request('http://api.telegram.org/bot'+tokenId+'/sendmessage?chat_id='+chatId+'&text=Ping has taken longer than '+ pingTime, function (error, response, body){})
