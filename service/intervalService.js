@@ -14,7 +14,7 @@ module.exports.startPing=function(datas,message,tokenId,chatId,repeatTime,pingTi
               ], function(data) {
          console.log(data);
          console.log(data[0].avg);
-        if(data[0].avg==null){
+        if(!data[0].avg){
             status=false;
             request('http://api.telegram.org/bot'+tokenId+'/sendmessage?chat_id='+chatId+'&text=Not Available', function (error, response, body){})
         }
@@ -29,8 +29,8 @@ module.exports.startPing=function(datas,message,tokenId,chatId,repeatTime,pingTi
                 ping.ping([
                     { address:datas.address, port:datas.port}
                     ], function(dat) {
-               console.log(data);
-            if(dat[0].avg==null){
+               console.log(dat);
+            if(!dat[0].avg){
                 request('http://api.telegram.org/bot'+tokenId+'/sendmessage?chat_id='+chatId+'&text=Not Available', function (error, response, body){})
                 console.log("no longer available");
             }
