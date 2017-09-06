@@ -20,16 +20,13 @@ var PingSchema = mongoose.Schema({
 	pingTime: {
 		type: String
 	},
-	alterTime: {
-		type: String
-	},
 	repeatTime: {
 		type: String
 	}
 
 });
 
-var pingData = module.exports = mongoose.model('pingData', PingSchema);
+var pingdata = module.exports = mongoose.model('pingdata', PingSchema);
 
 
 module.exports.createPingData= function(newData, callback){
@@ -38,13 +35,21 @@ module.exports.createPingData= function(newData, callback){
 }
 
 module.exports.findData=function(id,cb){
-	pingData.findOne({_id:id},cb)
+	pingdata.findOne({_id:id},cb)
 }
 
 module.exports.getData=function(id,cb){
-	pingData.find({userId:id},cb)
+	pingdata.find({userId:id},cb)
 }
 
 module.exports.deleteData=function(id,cb){
-	pingData.remove({_id:id},cb);
+	pingdata.remove({_id:id},cb);
+}
+
+
+module.exports.update=function(id,newData,callback){
+	console.log(newData.familyName);
+	console.log(id);
+	pingdata.findByIdAndUpdate({_id:id},newData,callback);
+	//pingdata.update({'_id':id},{'familyName':newData.familyName,'ip':newData.ip,'port':newData.port,'pingTime':newData.pingTime,'repeatTime':newData.pingTime},{upsert:true},callback);
 }

@@ -52,6 +52,7 @@ secureRoutes.use(function(req,res,next){
                         else{
                             console.log(data)
                            var datas={
+                                familyName:data.familyName,
                                 address:data.ip,
                                 port:data.port,
                                 attempts: 10,
@@ -60,9 +61,12 @@ secureRoutes.use(function(req,res,next){
                            var time=data.pingTime;
                            var message="Time taken to ping is greater than " + time;
                             Service.startPing(datas,message,tokenId,chatId,repeatTime,data.pingTime,function(data){
-                                if(data){
+                                if(!data){
                                 res.json(data);
                                 }
+                                if(data){
+                                    res.json(data);
+                                    }
                            })    
                 
                   }  
@@ -98,7 +102,6 @@ secureRoutes.use(function(req,res,next){
                     ip:req.body.ip,
                     port:req.body.port,
                     pingTime:req.body.pingTime,
-                    alterTime:req.body.alterTime,
                     repeatTime:req.body.repeatTime
                 })
                 PingData.createPingData(pingData, function(err, data){
@@ -162,6 +165,28 @@ secureRoutes.use(function(req,res,next){
                     res.json(data);
                 }
             })
-        });    
+        }); 
+        
+        secureRoutes.post('/update',function(req,res){
+            var id=req.body.id;
+            //console.log(req.body);
+            var pingData={
+                familyName:req.body.familyName,
+                ip:req.body.ip,
+                port:req.body.port,
+                pingTime:req.body.pingTime,
+                repeatTime:req.body.repeatTime
+            }
+            console.log(pingData);
+            PingData.update(id,pingData, function(err, data){
+                if(err){
+                    res.json({"errorcode":1})
+                }
+                else{
+                    res.json({"errorcode":0})
+                }
+            });
+            
+        })
 
       module.exports = secureRoutes;

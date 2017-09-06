@@ -3,16 +3,11 @@ html
   head
     meta(charset='UTF-8')
     title Task manager UI
+
     link(rel='stylesheet', href='/css/style.css')
-    link(rel='stylesheet', href='/stylesheets/style.css')
     link(rel='stylesheet', href='/stylesheets/bootstrap.css')
     link(rel='stylesheet', href='/stylesheets/bootstrap.min.css')
-    script(src='/javascripts/angular.js')
-    script(src='/javascripts/angular.min.js.map')
-    script(src='/javascripts/angular-cookies.js')
-    script(src='/javascripts/angular-cookies.min.js')
-    script(src='/javascripts/script.js')
-  body
+  body(ng-app="myApp",ng-controller='homeController' )
     .page
       .pageHeader
         .title Dashboard
@@ -26,17 +21,18 @@ html
             ul
               li.active
                 i.fa.fa-home
-                | Home
+                a(data-toggle="tab" href="#home" ng-init="getData()",ng-click="getData()")  Home
               li
                 i.fa.fa-tasks
-                a(href='/setting')  Token Setting
+                a(data-toggle="tab" href="#setting")  Token Setting
               li
                 i.fa.fa-tasks
-                a(href='/pingSetting')  Ping Setting
+                a(data-toggle="tab" href="#pingSetting")  Ping Setting
         .view
           .viewHeader
             .title Available Data
-            div(ng-app='myApp',ng-controller='homeController' ng-init="getData()" )
+            .tab-content
+              #home.tab-pane.fade.in.active
                 table.table.table-striped
                     thead.thead-inverse
                         tr
@@ -52,10 +48,82 @@ html
                             td {[{data.port}]}
                             td {[{data.repeatTime}]}
                             td
-                                button.btn.btn-success(type='button', ng-click='start(data._id)') Start
+                                button.btn.btn-success(type='button', ng-click='startPing(data._id)') Start
                                 button.btn.btn-danger(type='button', ng-click='stop()') Stop
+                                button.btn.btn-warning(type='button',data-toggle="modal", data-target="#myModal" ng-click='setEditData(data._id,data.familyName,data.port,data.ip,data.pingTime,data.repeatTime)') Edit
                                 button.btn.btn-primary(type='button', ng-click='delete(data._id)') Delete
-    script(src='http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js')
-    script(src='js/index.js')
-  
-            //{[{dataSet[0].familyName}]}
+              #myModal.modal.fade(role='dialog')
+                .modal-dialog
+                  .modal-content
+                    .modal-header(style='background-color:green')
+                      button.close(type='button', data-dismiss='modal') ×
+                      center
+                        h4.modal-title Edit
+                    .modal-body
+                      br
+                      .form-group.row
+                        .col-xs-6
+                          label Family Name
+                          input.form-control(type='text'  ng-model='editdata.familyName')
+                        .col-xs-6
+                          label IP
+                          input.form-control(type='text'  ng-model='editdata.ip')
+                        .col-xs-6
+                          label Port
+                          input.form-control(type='text' ng-model='editdata.port')
+                        .col-xs-6
+                          label If ping bigger than
+                          input.form-control(type='text'  ng-model='editdata.pingTime')
+                        .col-xs-6
+                          label Ping Every
+                          input.form-control(type='text' ng-model='editdata.repeatTime') 
+                          br
+                        .col-xs-12
+                          .col-xs-6
+                            button.btn.btn-primary.btn-block(type='button',ng-click='edit()') SUBMIT
+        
+                      .modal-footer
+                        button.btn.btn-default(type='button', data-dismiss='modal') Close
+
+              #setting.tab-pane.fade
+                br
+                .form-group.row
+                  .col-xs-7
+                    label Token Id
+                    input.form-control(type='text' placeholder='Token Id' ng-model='tokendata.tokenId')
+                  br
+                  .col-xs-7
+                    label Chat Id
+                    input.form-control(type='text' placeholder='Chat Id' ng-model='tokendata.chatId')
+                    br
+                  .col-xs-7
+                    button.btn.btn-primary.btn-block(type='button',ng-click='submitToken()') SUBMIT
+              #pingSetting.tab-pane.fade
+                br
+                .form-group.row
+                  .col-xs-6
+                    label Family Name
+                    input.form-control(type='text' placeholder='Family Name' ng-model='pingdata.familyName')
+                  .col-xs-6
+                    label IP
+                    input.form-control(type='text' placeholder='ip' ng-model='pingdata.ip')
+                  .col-xs-6
+                    label Port
+                    input.form-control(type='text' placeholder='port' ng-model='pingdata.port')
+                  .col-xs-6
+                    label If ping bigger than
+                    input.form-control(type='text' placeholder='ping time' ng-model='pingdata.pingTime')
+                  .col-xs-6
+                    label Ping Every
+                    input.form-control(type='text' placeholder='repeat time' ng-model='pingdata.repeatTime') 
+                    br
+                  .col-xs-12
+                    .col-xs-6
+                      button.btn.btn-primary.btn-block(type='button',ng-click='submitPing()') SUBMIT
+    
+    script(src='/javascripts/jquery.js')
+    script(src='/javascripts/bootstrap.min.js')
+    script(src='/javascripts/angular.js')
+    script(src='/javascripts/angular.min.js.map')
+    script(src='/javascripts/angular-cookies.js')
+    script(src='/javascripts/script.js')

@@ -9,51 +9,6 @@ app.config(function($cookiesProvider) {
     
 });
 
-app.controller("tokenController", ['$scope','setToken','$rootScope','$cookies', function($scope,setToken,$rootScope,$cookies){
-
-    $scope.data={
-        token:'',
-        userId:'',
-        tokenId:'',
-        chatId:''
-    }
-
-    $scope.submit=function(){
-        $scope.token=$cookies.get('token')
-        $scope.userId=$cookies.get('userId');
-        $scope.data.token=$scope.token;
-        $scope.data.userId=$scope.userId;
-       // alert(JSON.stringify($scope.data));
-        setToken.postData($scope.data)
-    }
-}]);
-
-app.service("setToken",['$http','$window',function($http,$window){
-    return{
-      postData:function(data){
-    
-        //alert(password.password1);
-      $http({
-        url: 'secure-api/setToken',
-        method: "POST",
-        data: data,
-        headers: {
-                 'Content-Type': 'application/json'
-        }
-    }).then(function(resp){
-      if(resp.data.errorcode===1){
-        alert("some thing went wrong please try again");
-    
-      }
-      if(resp.data.errorcode===0){
-          alert("Data saved")
-        }     
-    })
-    }
-    }
-    }]);
-
-
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
@@ -118,64 +73,52 @@ app.service("setToken",['$http','$window',function($http,$window){
 
 
 
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////                
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
+        app.controller("homeController", ['$scope','$rootScope','setPingData','setToken','editData','getHomeData','$cookies','startPing','stopPing','deletePing',function($scope,$rootScope,setPingData,setToken,editData,getHomeData,$cookies,startPing,stopPing,deletePing,setPing){
 
-app.controller("pingDataController", ['$scope','setPingData','$rootScope','$cookies', function($scope,setPingData,$rootScope,$cookies){
-        $scope.data={
-            familyName:'',
-            ip:'',
-            port:'',
-            pingTime:'',
-            alterTime:'',
-            repeatTime:''
-        }
-    
-        $scope.submit=function(){
-            $scope.token=$cookies.get('token')
-            $scope.userId=$cookies.get('userId');
-            $scope.data.token=$scope.token;
-            $scope.data.userId=$scope.userId;
-            //alert($rootScope.apple);
-           // alert("deepak")
-            setPingData.postData($scope.data)
-        }
-    }]);
-    
-    
-    app.service("setPingData",['$http','$window',function($http,$window){
-        return{
-          postData:function(data){
-        
-            //alert(password.password1);
-          $http({
-            url: 'secure-api/setPing',
-            method: "POST",
-            data: data,
-            headers: {
-                     'Content-Type': 'application/json'
+            $scope.pingdata={
+                familyName:'',
+                ip:'',
+                port:'',
+                pingTime:'',
+                repeatTime:''
             }
-        }).then(function(resp){
-          if(resp.data.errorcode===1){
-            alert("some thing went wrong please try again");
+            $scope.editdata={
+                id:'',
+                familyName:'',
+                ip:'',
+                port:'',
+                pingTime:'',
+                repeatTime:''
+            }
         
-          }
-          if(resp.data.errorcode===0){
-              alert("Data saved")
-            }     
-        })
-        }
-        }
-        }]);
+            $scope.submitPing=function(){
+                $scope.token=$cookies.get('token')
+                $scope.userId=$cookies.get('userId');
+                $scope.pingdata.token=$scope.token;
+                $scope.pingdata.userId=$scope.userId;
+                //alert($rootScope.apple);
+              // alert(JSON.stringify($scope.pingdata));
+                setPingData.postData($scope.pingdata)
+            }
 
-
-
-
-        //////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-
-        app.controller("homeController", ['$scope','setPingData','$rootScope','getHomeData','$cookies','startPing','stopPing','deletePing', function($scope,setPingData,$rootScope,getHomeData,$cookies,startPing,stopPing,deletePing){
+            $scope.tokendata={
+                token:'',
+                userId:'',
+                tokenId:'',
+                chatId:''
+            }
+        
+            $scope.submitToken=function(){
+                $scope.token=$cookies.get('token')
+                $scope.userId=$cookies.get('userId');
+                $scope.tokendata.token=$scope.token;
+                $scope.tokendata.userId=$scope.userId;
+               //alert(JSON.stringify($scope.tokendata));
+                setToken.postData($scope.tokendata)
+            }
 
             $scope.getData=function()
             {   //alert("deepak");
@@ -194,7 +137,8 @@ app.controller("pingDataController", ['$scope','setPingData','$rootScope','$cook
                    //alert(JSON.stringify($scope.dataSet));
                 })
             }
-            $scope.start=function(data){
+
+            $scope.startPing=function(data){
                 $scope.token=$cookies.get('token')
                 $scope.userId=$cookies.get('userId');
                 $scope.userData={
@@ -233,6 +177,27 @@ app.controller("pingDataController", ['$scope','setPingData','$rootScope','$cook
                 })
             
             }
+            $scope.setEditData=function(id,familyName,port,ip,pingTime,repeatTime){
+                $scope.editdata.id=id;
+                $scope.editdata.familyName=familyName;
+                $scope.editdata.port=port;
+                $scope.editdata.ip=ip;
+                $scope.editdata.pingTime=pingTime;
+                $scope.editdata.repeatTime=repeatTime;
+            }
+
+            $scope.edit=function(id){
+              //  alert(JSON.stringify($scope.editdata))
+                $scope.token=$cookies.get('token')
+                $scope.userId=$cookies.get('userId');
+                $scope.editdata.token=$scope.token;
+                $scope.editdata.userId=$scope.userId;
+                //alert($rootScope.apple);
+              // alert(JSON.stringify($scope.pingdata));
+                editData.postData($scope.editdata)
+            }
+
+
 
         }]);
 
@@ -351,3 +316,80 @@ app.controller("pingDataController", ['$scope','setPingData','$rootScope','$cook
                     
                     }
                     }]);
+
+
+                app.service("setToken",['$http','$window',function($http,$window){
+                    return{
+                        postData:function(data){
+                    
+                     //   alert("password.password1");
+                        $http({
+                        url: 'secure-api/setToken',
+                        method: "POST",
+                        data: data,
+                        headers: {
+                                    'Content-Type': 'application/json'
+                        }
+                    }).then(function(resp){
+                        if(resp.data.errorcode===1){
+                        alert("some thing went wrong please try again");
+                    
+                        }
+                        if(resp.data.errorcode===0){
+                            alert("Data saved");
+                        }     
+                    })
+                    }
+                    }
+                    }]);
+
+
+                    app.service("setPingData",['$http','$window',function($http,$window){
+                        return{
+                          postData:function(data){
+                        
+                           // alert("password.password1");
+                          $http({
+                            url: 'secure-api/setPing',
+                            method: "POST",
+                            data: data,
+                            headers: {
+                                     'Content-Type': 'application/json'
+                            }
+                        }).then(function(resp){
+                          if(resp.data.errorcode===1){
+                            alert("some thing went wrong please try again");
+                        
+                          }
+                          if(resp.data.errorcode===0){
+                            alert('Data Saved')
+                            }     
+                        })
+                        }
+                        }
+                        }]);
+
+                        app.service("editData",['$http','$window',function($http,$window){
+                            return{
+                              postData:function(data){
+                            
+                               alert("password.pword1");
+                              $http({
+                                url: 'secure-api/update',
+                                method: "POST",
+                                data: data,
+                                headers: {
+                                         'Content-Type': 'application/json'
+                                }
+                            }).then(function(resp){
+                              if(resp.data.errorcode===1){
+                                alert("some thing went wrong please try again");
+                            
+                              }
+                              if(resp.data.errorcode===0){
+                                  alert("Data saved")
+                                }     
+                            })
+                            }
+                            }
+                        }]);

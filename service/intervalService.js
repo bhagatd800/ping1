@@ -6,7 +6,7 @@ var status;
 var a=0;
 var b=0;
 module.exports.startPing=function(datas,message,tokenId,chatId,repeatTime,pingTime,cb){
-    
+    console.log(datas);
     var pingTime=parseInt(pingTime);
     clearInterval(interval);
 
@@ -18,11 +18,11 @@ module.exports.startPing=function(datas,message,tokenId,chatId,repeatTime,pingTi
          console.log(data[0].avg);
         if(!data[0].avg){
             status=false;
-            request('http://api.telegram.org/bot'+tokenId+'/sendmessage?chat_id='+chatId+'&text=Not Available', function (error, response, body){})
+            request('http://api.telegram.org/bot'+tokenId+'/sendmessage?chat_id='+chatId+'&text=Status:Down\n'+datas.familyName +' is not available', function (error, response, body){})
         }
 
         else{
-            request('http://api.telegram.org/bot'+tokenId+'/sendmessage?chat_id='+chatId+'&text=Ping has started for '+datas.address, function (error, response, body){})
+            request('http://api.telegram.org/bot'+tokenId+'/sendmessage?chat_id='+chatId+'&text=Status:Up\nPing has started for '+datas.familyName, function (error, response, body){})
             
             status= true;
 
@@ -40,15 +40,15 @@ module.exports.startPing=function(datas,message,tokenId,chatId,repeatTime,pingTi
             }
             if(dat[0].avg>pingTime){
                 b=0;
-               request('http://api.telegram.org/bot'+tokenId+'/sendmessage?chat_id='+chatId+'&text=Ping has taken longer than '+ pingTime, function (error, response, body){})
+               request('http://api.telegram.org/bot'+tokenId+'/sendmessage?chat_id='+chatId+'&text=Status:Time\n'+datas.familyName+' has taken longer than '+ pingTime, function (error, response, body){})
             }
 
             if(a==0&&b==1){
                 a=1;
-                request('http://api.telegram.org/bot'+tokenId+'/sendmessage?chat_id='+chatId+'&text=Not Available', function (error, response, body){})
+                request('http://api.telegram.org/bot'+tokenId+'/sendmessage?chat_id='+chatId+'&text=Status:Down\n'+datas.familyName +' is not available', function (error, response, body){})
             }
             if(a==1&&b==0){
-                request('http://api.telegram.org/bot'+tokenId+'/sendmessage?chat_id='+chatId+'&text=Now Available', function (error, response, body){})
+                request('http://api.telegram.org/bot'+tokenId+'/sendmessage?chat_id='+chatId+'&text=Status:Up\n'+datas.familyName +' is now available', function (error, response, body){})
                 a=0;
             }
 
