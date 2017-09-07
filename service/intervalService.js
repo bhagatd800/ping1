@@ -11,7 +11,10 @@ var b=0;
 var upTime;
 var downTime;
 module.exports.startPing=function(datas,message,tokenId,chatId,repeatTime,pingTime,cb){
-   // console.log(datas);
+   if(!pingTime){
+       pingTime=100000000;
+   }
+   console.log(pingTime);
     var pingTime=parseInt(pingTime);
 
   //  console.log(a);
