@@ -76,7 +76,7 @@ app.config(function($cookiesProvider) {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-        app.controller("homeController", ['$scope','$rootScope','setPingData','setToken','editData','getHomeData','$cookies','startPing','stopPing','deletePing',function($scope,$rootScope,setPingData,setToken,editData,getHomeData,$cookies,startPing,stopPing,deletePing,setPing){
+        app.controller("homeController", ['$scope','$rootScope','setPingData','setToken','getTokenData','editData','getHomeData','$cookies','startPing','stopPing','deletePing',function($scope,$rootScope,setPingData,setToken,getTokenData,editData,getHomeData,$cookies,startPing,stopPing,deletePing,setPing){
 
             $scope.pingdata={
                 familyName:'',
@@ -149,10 +149,11 @@ app.config(function($cookiesProvider) {
                 //alert(JSON.stringify( $scope.userData));
                 startPing.postData($scope.userData);
             }
-            $scope.stop=function(){
+            $scope.stop=function(id){
                 $scope.token=$cookies.get('token')
                 $scope.userId=$cookies.get('userId');
                 $scope.userData={
+                    id:id,
                     token:$scope.token,
                     userId:$scope.userId
                 }
@@ -196,7 +197,18 @@ app.config(function($cookiesProvider) {
               // alert(JSON.stringify($scope.pingdata));
                 editData.postData($scope.editdata)
             }
-
+            $scope.getToken=function(){
+                $scope.token=$cookies.get('token')
+                $scope.userId=$cookies.get('userId');
+                $scope.tokendatas={
+                    token:$scope.token,
+                    userId:$scope.userId
+                }
+                //alert($scope.tokendatas);
+                getTokenData.getData($scope.tokendatas).then(function(data){
+                    $scope.tokendata=data;
+                })
+            }
 
 
         }]);
@@ -248,6 +260,7 @@ app.config(function($cookiesProvider) {
                  else if(resp.data==true){
                        // alert(resp.data);
                         alert('ping started')
+                        $window.location.href='/home'
                     }
                 else if(resp.data==false){
                     alert('Destination does_not exist')
@@ -281,6 +294,7 @@ app.config(function($cookiesProvider) {
              
                 else{
                     alert('Ping Stoped')
+                    $window.location.href='/home'
                 }
                 })
                 
@@ -373,7 +387,7 @@ app.config(function($cookiesProvider) {
                             return{
                               postData:function(data){
                             
-                               alert("password.pword1");
+                               //alert("password.pword1");
                               $http({
                                 url: 'secure-api/update',
                                 method: "POST",
@@ -388,8 +402,35 @@ app.config(function($cookiesProvider) {
                               }
                               if(resp.data.errorcode===0){
                                   alert("Data saved")
+                                  $window.location.href='/home'
                                 }     
                             })
                             }
                             }
                         }]);
+
+
+                        app.service("getTokenData",['$http','$window',function($http,$window){
+                            return{
+                              getData:function(data){
+                            //alert(JSON.stringify(data));
+                           // alert("password.password1");
+                              data=$http({
+                                url: 'secure-api/getTokenData',
+                                method: "POST",
+                                data: data,
+                                headers: {
+                                         'Content-Type': 'application/json'
+                                }
+                            }).then(function(resp){
+                              if(resp.data.errorcode===1){
+                                alert("some thing went wrong please try again");
+                            
+                              }
+                                 return resp.data;
+                            })
+                                return data;
+                            }
+                            
+                            }
+                            }]);

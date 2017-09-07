@@ -24,7 +24,7 @@ html
                 a(data-toggle="tab" href="#home" ng-init="getData()",ng-click="getData()")  Home
               li
                 i.fa.fa-tasks
-                a(data-toggle="tab" href="#setting")  Token Setting
+                a(data-toggle="tab" href="#setting",ng-click="getToken()")  Token Setting
               li
                 i.fa.fa-tasks
                 a(data-toggle="tab" href="#pingSetting")  Ping Setting
@@ -40,6 +40,7 @@ html
                         th Ip
                         th Port
                         th Repeat Time
+                        th Status
                         th Action
                     tbody
                         tr(ng-repeat="data in dataSet")
@@ -47,11 +48,12 @@ html
                             td {[{data.ip}]}
                             td {[{data.port}]}
                             td {[{data.repeatTime}]}
+                            td {[{data.status}]}
                             td
-                                button.btn.btn-success(type='button', ng-click='startPing(data._id)') Start
-                                button.btn.btn-danger(type='button', ng-click='stop()') Stop
-                                button.btn.btn-warning(type='button',data-toggle="modal", data-target="#myModal" ng-click='setEditData(data._id,data.familyName,data.port,data.ip,data.pingTime,data.repeatTime)') Edit
-                                button.btn.btn-primary(type='button', ng-click='delete(data._id)') Delete
+                              button.btn.btn-success(type='button',ng-if='data.status=="stopped"' ng-click='startPing(data._id)') Start
+                              button.btn.btn-danger(type='button',ng-if='data.status=="running"' ng-click='stop(data._id)') Stop
+                              button.btn.btn-warning(type='button',data-toggle="modal", data-target="#myModal" ng-click='setEditData(data._id,data.familyName,data.port,data.ip,data.pingTime,data.repeatTime)') Edit
+                              button.btn.btn-primary(type='button', ng-click='delete(data._id)') Delete
               #myModal.modal.fade(role='dialog')
                 .modal-dialog
                   .modal-content
@@ -80,7 +82,7 @@ html
                           br
                         .col-xs-12
                           .col-xs-6
-                            button.btn.btn-primary.btn-block(type='button',ng-click='edit()') SUBMIT
+                            button.btn.btn-primary.btn-block(type='button',ng-click='edit()',data-dismiss='modal') SUBMIT
         
                       .modal-footer
                         button.btn.btn-default(type='button', data-dismiss='modal') Close

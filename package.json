@@ -16,6 +16,7 @@
     "jade": "~1.11.0",
     "jsonwebtoken": "^7.4.3",
     "meteor-ping": "^1.0.3",
+    "moment": "^2.18.1",
     "mongodb": "*",
     "mongoose": "*",
     "morgan": "~1.8.1",

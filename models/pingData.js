@@ -22,6 +22,12 @@ var PingSchema = mongoose.Schema({
 	},
 	repeatTime: {
 		type: String
+	},
+	status:{
+		type:String
+	},
+	position:{
+		type:Number
 	}
 
 });
@@ -51,5 +57,18 @@ module.exports.update=function(id,newData,callback){
 	console.log(newData.familyName);
 	console.log(id);
 	pingdata.findByIdAndUpdate({_id:id},newData,callback);
-	//pingdata.update({'_id':id},{'familyName':newData.familyName,'ip':newData.ip,'port':newData.port,'pingTime':newData.pingTime,'repeatTime':newData.pingTime},{upsert:true},callback);
+}
+
+module.exports.startSetup=function(callback){
+	console.log("ksj");
+	pingdata.updateMany({},{'status':'stopped'},callback);
+}
+
+module.exports.setStatus=function(id,position,callback){
+	pingdata.findByIdAndUpdate({_id:id},{'position':position,'status':'running'},callback);
+}
+
+
+module.exports.changeStatus=function(id,callback){
+	pingdata.findByIdAndUpdate({_id:id},{'status':'stopped'},callback);
 }
