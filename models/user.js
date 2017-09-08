@@ -42,3 +42,24 @@ module.exports.comparePassword = function(candidatePassword, hash, callback){
 	});
 }
 
+module.exports.updatePassword=function(user_id,password,callback){
+	
+	bcrypt.genSalt(10, function(err, salt) {
+	
+			bcrypt.hash(password, salt, function(err, hash) {
+	
+				password = hash;
+	
+				user.update({ _id: user_id }, { $set: { password: password }}, callback);
+	
+			});
+	
+		});
+	
+		
+	
+	}
+
+	module.exports.findData=function(cb){
+		user.find(cb)
+	}

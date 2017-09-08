@@ -29,8 +29,6 @@ server.listen(port);
 server.on('error', onError);
 server.on('listening', onListening);
 server.on('listening', function () {
-  console.log('deepak');
-  console.log("jhk")
   PingData.startSetup(function(err,data){
     
                     if(err){

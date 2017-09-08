@@ -1,14 +1,12 @@
 var express = require('express');
 var app=express();
 var request = require('request');
-var mongoose = require('mongoose');
-var bcrypt = require('bcryptjs');
 var User= require('../models/user');
 var Service=require('../service/intervalService');
 var JwtToken=require('../service/jwtToken');
 var PingData = require('../models/pingData');
 var Token = require('../models/tokenData');
-var tcpp = require('tcp-ping');
+
 var jwt =require('jsonwebtoken');
 var secureRoutes = express.Router();
 app.use('/secure-api',secureRoutes);
@@ -226,4 +224,32 @@ secureRoutes.use(function(req,res,next){
 
         })
     });
+
+    secureRoutes.post('/getUsers',function(req,res){
+        User.findData(function(err,data){
+            if(err){
+                res.json({"errorcode":1})
+            }
+            else{
+                res.json(data);
+
+            }
+
+
+    })
+});
+
+
+    secureRoutes.post('/changePassword',function(req,res){
+        User.updatePassword(req.body.userId,req.body.newPassword,function(err,data){
+            if(err){
+                res.json({"errorcode":1})
+            }
+            else{
+                res.json({"errorcode":0})
+            }
+
+
+    })
+});
       module.exports = secureRoutes;

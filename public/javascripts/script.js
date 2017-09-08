@@ -76,7 +76,7 @@ app.config(function($cookiesProvider) {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-        app.controller("homeController", ['$scope','$rootScope','setPingData','setToken','getTokenData','editData','getHomeData','$cookies','startPing','stopPing','deletePing',function($scope,$rootScope,setPingData,setToken,getTokenData,editData,getHomeData,$cookies,startPing,stopPing,deletePing,setPing){
+        app.controller("homeController", ['$scope','getUsers','$rootScope','changePassword','setPingData','setToken','getTokenData','editData','getHomeData','$cookies','startPing','stopPing','deletePing',function($scope,getUsers,$rootScope,changePassword,setPingData,setToken,getTokenData,editData,getHomeData,$cookies,startPing,stopPing,deletePing,setPing){
 
             $scope.pingdata={
                 familyName:'',
@@ -92,6 +92,10 @@ app.config(function($cookiesProvider) {
                 port:'',
                 pingTime:'',
                 repeatTime:''
+            }
+            $scope.password={
+                newPassword:'',
+                confirmPassword:''
             }
         
             $scope.submitPing=function(){
@@ -210,8 +214,35 @@ app.config(function($cookiesProvider) {
                 })
             }
 
+            $scope.changePassword=function(){
+                if(!$scope.password.newPassword){
+                    passwordInvalid();
+                }
+                else if($scope.password.newPassword===$scope.password.confirmPassword){
+                    $scope.password.token=$cookies.get('token')
+                    $scope.password.userId=$cookies.get('userId');
+                    
+                    changePassword.postData($scope.password);
+                }
+                else{
+                    passwordError();
+                }
+            }
+            $scope.getUser=function(){
+                $scope.token=$cookies.get('token')
+                $scope.userId=$cookies.get('userId');
+                $scope.userdata={
+                    token:$scope.token,
+                    userId:$scope.userId
+                }
+                getUsers.getData($scope.userdata).then(function(data){
+                    $scope.users=data;
+                })
+            }
 
         }]);
+
+
 
         app.service("getHomeData",['$http','$window',function($http,$window){
             return{
@@ -259,11 +290,12 @@ app.config(function($cookiesProvider) {
                   }
                  else if(resp.data==true){
                        // alert(resp.data);
-                        alert('ping started')
+                        pingStart();
                         $window.location.href='/home'
                     }
                 else if(resp.data==false){
-                    alert('Destination does_not exist')
+                    error();
+                   // alert('Destination does_not exist')
                 }
                 })
                 
@@ -288,13 +320,14 @@ app.config(function($cookiesProvider) {
                     }
                 }).then(function(resp){
                   if(resp.data.errorcode===1){
-                    alert("some thing went wrong please try again");
+                    error();
                 
                   }
              
                 else{
-                    alert('Ping Stoped')
+                    pingStop();
                     $window.location.href='/home'
+                    
                 }
                 })
                 
@@ -317,12 +350,13 @@ app.config(function($cookiesProvider) {
                         }
                     }).then(function(resp){
                       if(resp.data.errorcode===1){
-                        alert("some thing went wrong please try again");
+                        error();
                     
                       }
                         else{
-                            alert('Deleted Successfully');
+                            pingDelete();
                             $window.location.href='/home'
+                            
                         }
                     })
                 
@@ -346,11 +380,11 @@ app.config(function($cookiesProvider) {
                         }
                     }).then(function(resp){
                         if(resp.data.errorcode===1){
-                        alert("some thing went wrong please try again");
+                        error();
                     
                         }
                         if(resp.data.errorcode===0){
-                            alert("Data saved");
+                            status();
                         }     
                     })
                     }
@@ -372,11 +406,11 @@ app.config(function($cookiesProvider) {
                             }
                         }).then(function(resp){
                           if(resp.data.errorcode===1){
-                            alert("some thing went wrong please try again");
+                            error();
                         
                           }
                           if(resp.data.errorcode===0){
-                            alert('Data Saved')
+                            status()
                             }     
                         })
                         }
@@ -397,11 +431,11 @@ app.config(function($cookiesProvider) {
                                 }
                             }).then(function(resp){
                               if(resp.data.errorcode===1){
-                                alert("some thing went wrong please try again");
+                                error();
                             
                               }
                               if(resp.data.errorcode===0){
-                                  alert("Data saved")
+                                status()
                                   $window.location.href='/home'
                                 }     
                             })
@@ -424,7 +458,7 @@ app.config(function($cookiesProvider) {
                                 }
                             }).then(function(resp){
                               if(resp.data.errorcode===1){
-                                alert("some thing went wrong please try again");
+                                errror();
                             
                               }
                                  return resp.data;
@@ -434,3 +468,54 @@ app.config(function($cookiesProvider) {
                             
                             }
                             }]);
+
+                            app.service("changePassword",['$http','$window',function($http,$window){
+                                return{
+                                  postData:function(data){
+                                
+                                   alert("password.pword1");
+                                  $http({
+                                    url: 'secure-api/changepassword',
+                                    method: "POST",
+                                    data: data,
+                                    headers: {
+                                             'Content-Type': 'application/json'
+                                    }
+                                }).then(function(resp){
+                                  if(resp.data.errorcode===1){
+                                    error();
+                                
+                                  }
+                                  if(resp.data.errorcode===0){
+                                    password()
+
+                                    }     
+                                })
+                                }
+                                }
+                            }]);
+
+                            app.service("getUsers",['$http','$window',function($http,$window){
+                                return{
+                                  getData:function(data){
+                                //alert(JSON.stringify(data));
+                               // alert("password.password1");
+                                  data=$http({
+                                    url: 'secure-api/getUsers',
+                                    method: "POST",
+                                    data: data,
+                                    headers: {
+                                             'Content-Type': 'application/json'
+                                    }
+                                }).then(function(resp){
+                                  if(resp.data.errorcode===1){
+                                    errror();
+                                
+                                  }
+                                     return resp.data;
+                                })
+                                    return data;
+                                }
+                                
+                                }
+                                }]);
