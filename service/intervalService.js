@@ -32,7 +32,7 @@ module.exports.startPing=function(datas,message,tokenId,chatId,repeatTime,pingTi
         if(!data[0].avg){
             status=false;
             
-            request('http://api.telegram.org/bot'+tokenId+'/sendmessage?chat_id='+chatId+'&text=Status:Down\n\xE2\x9D\x8C'+datas.familyName +' ('+datas.address+':'+datas.port+')'+ 'is not available', function (error, response, body){})
+            request('http://api.telegram.org/bot'+tokenId+'/sendmessage?chat_id='+chatId+'&text=Status:Down\n\xE2\x9D\x8C'+datas.familyName +' ('+datas.address+':'+datas.port+') '+ 'is not available', function (error, response, body){})
         }
     
         else{
@@ -47,7 +47,7 @@ module.exports.startPing=function(datas,message,tokenId,chatId,repeatTime,pingTi
 
             })
             var time=moment().format('MMMM Do YYYY, h:mm:ss a');
-            request('http://api.telegram.org/bot'+tokenId+'/sendmessage?chat_id='+chatId+'&text=Status:Up\n\xF0\x9F\x92\x96 Ping has started for '+datas.familyName+' ('+datas.address+':'+datas.port+') '+'on '+time, function (error, response, body){})
+            request('http://api.telegram.org/bot'+tokenId+'/sendmessage?chat_id='+chatId+'&text=Status:Up\n\xF0\x9F\x94\x9C Ping has started for '+datas.familyName+' ('+datas.address+':'+datas.port+') '+'on '+time, function (error, response, body){})
             
             status= true;
 
@@ -59,7 +59,7 @@ module.exports.startPing=function(datas,message,tokenId,chatId,repeatTime,pingTi
             if(!dat[0].avg){
                 var time=moment().format('MMMM Do YYYY, h:mm:ss a');
                 if(loop1==1){
-                    request('http://api.telegram.org/bot'+tokenId+'/sendmessage?chat_id='+chatId+'&text=Status:Down\n\xE2\x9A\xA0'+datas.familyName +' ('+datas.address+':'+datas.port+') '+'is still down', function (error, response, body){})
+                    request('http://api.telegram.org/bot'+tokenId+'/sendmessage?chat_id='+chatId+'&text=\xE2\x9A\xA0'+datas.familyName +' ('+datas.address+':'+datas.port+') '+'is still down', function (error, response, body){})
                 }
                 if(loop1==0){
                 request('http://api.telegram.org/bot'+tokenId+'/sendmessage?chat_id='+chatId+'&text=Status:Down\n\xE2\x9D\x8C'+datas.familyName +' ('+datas.address+':'+datas.port+') '+'is down '+time, function (error, response, body){})
@@ -76,10 +76,10 @@ module.exports.startPing=function(datas,message,tokenId,chatId,repeatTime,pingTi
                 b=0;
                 var time=moment().format('MMMM Do YYYY, h:mm:ss a');
                 if(loop2==1){
-                    request('http://api.telegram.org/bot'+tokenId+'/sendmessage?chat_id='+chatId+'&text=Status:Time\n\xE2\x9A\xA0'+datas.familyName+' ('+datas.address+':'+datas.port+') '+'has taken longer than '+ pingTime, function (error, response, body){})
+                    request('http://api.telegram.org/bot'+tokenId+'/sendmessage?chat_id='+chatId+'&text=\xE2\x9A\xA0'+datas.familyName+' ('+datas.address+':'+datas.port+') '+'has taken longer than '+ pingTime, function (error, response, body){})
                 }
                 if(loop2==0){
-               request('http://api.telegram.org/bot'+tokenId+'/sendmessage?chat_id='+chatId+'&text=Status:Time\n\xE2\x9A\xA0'+datas.familyName+' ('+datas.address+':'+datas.port+') '+'has taken longer than '+ pingTime+' on '+ time, function (error, response, body){})
+               request('http://api.telegram.org/bot'+tokenId+'/sendmessage?chat_id='+chatId+'&text=Status:Time\n\xE2\x8F\xB0'+datas.familyName+' ('+datas.address+':'+datas.port+') '+'has taken longer than '+ pingTime+' on '+ time, function (error, response, body){})
                 loop2=1;
             }
             
@@ -109,7 +109,7 @@ module.exports.startPing=function(datas,message,tokenId,chatId,repeatTime,pingTi
 
 module.exports.stopPing=function(tokenId,chatId,pos,id,familyName,cb){
     var time=moment().format('MMMM Do YYYY, h:mm:ss a');
-    request('http://api.telegram.org/bot'+tokenId+'/sendmessage?chat_id='+chatId+'&text=\xF0\x9F\x92\x96 Ping has been stoped for '+familyName+' on '+time, function (error, response, body){})
+    request('http://api.telegram.org/bot'+tokenId+'/sendmessage?chat_id='+chatId+'&text=\xF0\x9F\x94\x9A Ping has been stoped for '+familyName+' on '+time, function (error, response, body){})
   clearInterval(interval[pos]);
   PingData.changeStatus(id,function(err,data){
     
