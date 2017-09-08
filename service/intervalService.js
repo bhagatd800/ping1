@@ -62,6 +62,7 @@ module.exports.startPing=function(datas,message,tokenId,chatId,repeatTime,pingTi
                     request('http://api.telegram.org/bot'+tokenId+'/sendmessage?chat_id='+chatId+'&text=\xE2\x9A\xA0'+datas.familyName +' ('+datas.address+':'+datas.port+') '+'is still down', function (error, response, body){})
                 }
                 if(loop1==0){
+                    loop2=0
                 request('http://api.telegram.org/bot'+tokenId+'/sendmessage?chat_id='+chatId+'&text=Status:Down\n\xE2\x9D\x8C'+datas.familyName +' ('+datas.address+':'+datas.port+') '+'is down '+time, function (error, response, body){})
                 loop1=1;
                 b=1;
@@ -92,7 +93,7 @@ module.exports.startPing=function(datas,message,tokenId,chatId,repeatTime,pingTi
                 loop1=0;
                 upTime=moment().format('MMMM Do YYYY, h:mm:ss a');
                 var dif=moment.utc(moment(upTime,"MMMM Do YYYY, h:mm:ss a").diff(moment(downTime,"MMMM Do YYYY, h:mm:ss a"))).format("HH:mm:ss");
-                request('http://api.telegram.org/bot'+tokenId+'/sendmessage?chat_id='+chatId+'&text=Status:Up\n\xF0\x9F\x92\x96'+datas.familyName +' ('+datas.address+':'+datas.port+') '+' is now available '+upTime+'.The server was down for '+dif, function (error, response, body){})
+                request('http://api.telegram.org/bot'+tokenId+'/sendmessage?chat_id='+chatId+'&text=Status:Up\n \xE2\x9D\xA4'+datas.familyName +' ('+datas.address+':'+datas.port+') '+' is now available '+upTime+'.The server was down for '+dif, function (error, response, body){})
                 a=0;
             }
 
