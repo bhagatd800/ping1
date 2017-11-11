@@ -15,7 +15,7 @@ var session = require('express-session');
 var app = express();
 var jwt =require('jsonwebtoken');
 mongoose.Promise = global.Promise;
-mongoose.connect('mongodb://localhost/database',{
+mongoose.connect('mongodb://deepak:bhagat@ds259325.mlab.com:59325/heroku_9mljvgpd',{
   useMongoClient: true
 });
 var db = mongoose.connection;
