@@ -473,7 +473,7 @@ app.config(function($cookiesProvider) {
                                 return{
                                   postData:function(data){
                                 
-                                   alert("password.pword1");
+                               //    alert("password.pword1");
                                   $http({
                                     url: 'secure-api/changepassword',
                                     method: "POST",
